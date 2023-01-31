@@ -1,8 +1,9 @@
 const board = document.querySelector('.board');
 let isSnakeMove = false;
-let time = performance.now();
-const snakeSpeed = 300;
+const snakeSpeed = 6; //1 slow, 10 fast
+const boardCellsNr = 10;
 let key = 'ArrowRight';
+let time = performance.now();
 const itemsArr = [
 	{
 		x: 1,
@@ -40,7 +41,8 @@ function snakeMove(xNr, yNr) {
 	itemsArr.push({ x, y });
 	itemsArr.shift();
 
-	if (x > 10 || y > 10 || x <= 0 || y <= 0) return (isSnakeMove = false);
+	if (x > boardCellsNr || y > boardCellsNr || x <= 0 || y <= 0)
+		return (isSnakeMove = false);
 
 	displayItems();
 }
@@ -65,7 +67,7 @@ function chooseDirection(key) {
 function timeLoop(currentTime) {
 	window.requestAnimationFrame(timeLoop);
 	if (!isSnakeMove) return;
-	if (currentTime - time < snakeSpeed) return;
+	if (currentTime - time < 1000 / snakeSpeed) return;
 	chooseDirection(key);
 	time = currentTime;
 }
