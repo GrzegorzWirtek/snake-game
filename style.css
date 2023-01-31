@@ -35,33 +35,31 @@ body {
 
 .board {
   margin-top: 50px;
-  position: relative;
-  border: 1px solid var(--border-color);
   width: var(--board-size);
   height: var(--board-size);
+  border: 1px solid var(--border-color);
+  display: grid;
+  grid-template-columns: repeat(10, var(--item-size));
+  grid-template-rows: repeat(10, var(--item-size));
 }
 
 .item {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--item-size);
-  height: var(--item-size);
   border: 1px solid white;
+  grid-column-start: 1;
+  grid-row-start: 1;
   background-color: var(--item-color);
 }
 
-/* .item:nth-child(1) {
-  left: var(--item-size);
+.item:nth-child(1) {
+  grid-column-start: 2;
+  grid-row-start: 1;
 }
 
 .item:nth-child(2) {
-  left: calc(var(--item-size) * 2)
+  grid-column-start: 3;
+  grid-row-start: 1;
 }
 
-.item:nth-child(3) {
-  left: calc(var(--item-size) * 3)
-} */
 
 button {
   margin-top: 20px;

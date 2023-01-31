@@ -1,31 +1,54 @@
-const item = document.querySelector('.item');
-const itemSize = 40;
+const board = document.querySelector('.board');
 let isSnakeMove = false;
 let time = performance.now();
-const snakeSpeed = 300;
-let counterX = 0;
-let counterY = 0;
+const snakeSpeed = 500;
 let key = 'ArrowRight';
+const itemsArr = [
+	{
+		x: 1,
+		y: 1,
+	},
+	{
+		x: 2,
+		y: 1,
+	},
+	{
+		x: 3,
+		y: 1,
+	},
+];
 
-function snakeMove(key) {
-	let x = item.style.transform.slice(10, 13).replace(/p/g, '');
-	x = x === '' ? 0 : parseInt(x);
-	let y = item.style.transform.slice(-6, -2).replace(/p/g, '');
-	y = y === '' ? 0 : parseInt(y);
-	console.log(x, y);
+function displayItems() {
+	board.textContent = '';
+	itemsArr.map((position) => {
+		const newItem = document.createElement('div');
+		newItem.classList.add('item');
+		newItem.style.gridColumnStart = position.x;
+		newItem.style.gridRowStart = position.y;
+		board.appendChild(newItem);
+	});
+}
+
+function snakeMove(xNr, yNr) {
+	const x = itemsArr[itemsArr.length - 1].x + xNr;
+	const y = itemsArr[itemsArr.length - 1].y + yNr;
+	if (x > 10 || y > 10 || x <= 0 || y <= 0) return (isSnakeMove = false);
+	itemsArr.push({ x, y });
+	itemsArr.shift();
+
+	displayItems();
+}
+
+function chooseDirection(key) {
 	switch (key) {
 		case 'ArrowRight':
-			return (item.style.transform = `translate(${(counterX +=
-				itemSize)}px, ${counterY}px)`);
+			return snakeMove(1, 0);
 		case 'ArrowLeft':
-			return (item.style.transform = `translate(${(counterX -=
-				itemSize)}px, ${counterY}px)`);
+			return snakeMove(-1, 0);
 		case 'ArrowDown':
-			return (item.style.transform = `translate(${counterX}px, ${(counterY +=
-				itemSize)}px)`);
+			return snakeMove(0, 1);
 		case 'ArrowUp':
-			return (item.style.transform = `translate(${counterX}px, ${(counterY -=
-				itemSize)}px)`);
+			return snakeMove(0, -1);
 	}
 }
 
@@ -33,7 +56,7 @@ function timeLoop(currentTime) {
 	window.requestAnimationFrame(timeLoop);
 	if (!isSnakeMove) return;
 	if (currentTime - time < snakeSpeed) return;
-	snakeMove(key);
+	chooseDirection(key);
 	time = currentTime;
 }
 
@@ -47,7 +70,6 @@ function stopMove() {
 }
 
 function keyDown(e) {
-	console.log(e.key);
 	key = e.key;
 }
 
