@@ -60,6 +60,11 @@ body {
   grid-row-start: 1;
 }
 
+.item:nth-child(3) {
+  grid-column-start: 4;
+  grid-row-start: 1;
+}
+
 
 button {
   margin-top: 20px;

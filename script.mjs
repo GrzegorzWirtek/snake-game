@@ -1,7 +1,7 @@
 const board = document.querySelector('.board');
 let isSnakeMove = false;
 let time = performance.now();
-const snakeSpeed = 500;
+const snakeSpeed = 300;
 let key = 'ArrowRight';
 const itemsArr = [
 	{
@@ -14,6 +14,10 @@ const itemsArr = [
 	},
 	{
 		x: 3,
+		y: 1,
+	},
+	{
+		x: 4,
 		y: 1,
 	},
 ];
@@ -30,11 +34,13 @@ function displayItems() {
 }
 
 function snakeMove(xNr, yNr) {
-	const x = itemsArr[itemsArr.length - 1].x + xNr;
-	const y = itemsArr[itemsArr.length - 1].y + yNr;
-	if (x > 10 || y > 10 || x <= 0 || y <= 0) return (isSnakeMove = false);
+	let x = itemsArr[itemsArr.length - 1].x + xNr;
+	let y = itemsArr[itemsArr.length - 1].y + yNr;
+
 	itemsArr.push({ x, y });
 	itemsArr.shift();
+
+	if (x > 10 || y > 10 || x <= 0 || y <= 0) return (isSnakeMove = false);
 
 	displayItems();
 }
@@ -42,13 +48,17 @@ function snakeMove(xNr, yNr) {
 function chooseDirection(key) {
 	switch (key) {
 		case 'ArrowRight':
-			return snakeMove(1, 0);
+			snakeMove(1, 0);
+			break;
 		case 'ArrowLeft':
-			return snakeMove(-1, 0);
+			snakeMove(-1, 0);
+			break;
 		case 'ArrowDown':
-			return snakeMove(0, 1);
+			snakeMove(0, 1);
+			break;
 		case 'ArrowUp':
-			return snakeMove(0, -1);
+			snakeMove(0, -1);
+			break;
 	}
 }
 
@@ -70,6 +80,13 @@ function stopMove() {
 }
 
 function keyDown(e) {
+	if (
+		(key === 'ArrowLeft' && e.key === 'ArrowRight') ||
+		(key === 'ArrowRight' && e.key === 'ArrowLeft') ||
+		(key === 'ArrowUp' && e.key === 'ArrowDown') ||
+		(key === 'ArrowDown' && e.key === 'ArrowUp')
+	)
+		return;
 	key = e.key;
 }
 
