@@ -1,10 +1,11 @@
 const board = document.querySelector('.board');
+const playAgainBtn = document.querySelector('#play-again-btn');
 let isSnakeMove = false;
 const snakeSpeed = 6; //1 slow, 10 fast
 const boardCellsNr = 10;
 let key = 'ArrowRight';
 let time = performance.now();
-const itemsArr = [
+let itemsArr = [
 	{
 		x: 1,
 		y: 1,
@@ -22,6 +23,36 @@ const itemsArr = [
 		y: 1,
 	},
 ];
+
+function playAgain() {
+	playAgainBtn.classList.remove('visible');
+	playAgainBtn.removeEventListener('click', playAgain);
+	itemsArr = [
+		{
+			x: 1,
+			y: 1,
+		},
+		{
+			x: 2,
+			y: 1,
+		},
+		{
+			x: 3,
+			y: 1,
+		},
+		{
+			x: 4,
+			y: 1,
+		},
+	];
+	key = 'ArrowRight';
+	displayItems();
+}
+
+function gameOver() {
+	playAgainBtn.classList.add('visible');
+	playAgainBtn.addEventListener('click', playAgain);
+}
 
 function displayItems() {
 	board.textContent = '';
@@ -65,8 +96,8 @@ function chooseDirection(key) {
 }
 
 function timeLoop(currentTime) {
+	if (!isSnakeMove) return gameOver();
 	window.requestAnimationFrame(timeLoop);
-	if (!isSnakeMove) return;
 	if (currentTime - time < 1000 / snakeSpeed) return;
 	chooseDirection(key);
 	time = currentTime;

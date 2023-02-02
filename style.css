@@ -72,3 +72,11 @@ button {
   width: 120px;
   cursor: pointer;
 }
+
+.play-again-btn {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
