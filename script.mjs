@@ -59,15 +59,7 @@ function gameOver() {
 	playAgainBtn.addEventListener('click', playAgain);
 }
 
-function displayItems() {
-	board.textContent = '';
-	itemsArr.map((position) => {
-		const newItem = document.createElement('div');
-		newItem.classList.add('item');
-		newItem.style.gridColumnStart = position.x;
-		newItem.style.gridRowStart = position.y;
-		board.appendChild(newItem);
-	});
+function displayFood() {
 	const food = document.createElement('div');
 	food.classList.add('food');
 	food.style.gridColumnStart = foodPosition.x;
@@ -75,15 +67,33 @@ function displayItems() {
 	board.appendChild(food);
 }
 
+function displayItems() {
+	board.textContent = '';
+
+	itemsArr.map((position) => {
+		const newItem = document.createElement('div');
+		newItem.classList.add('item');
+		newItem.style.gridColumnStart = position.x;
+		newItem.style.gridRowStart = position.y;
+		board.appendChild(newItem);
+	});
+	displayFood();
+}
+
 function snakeMove(xNr, yNr) {
 	let x = itemsArr[itemsArr.length - 1].x + xNr;
 	let y = itemsArr[itemsArr.length - 1].y + yNr;
 
 	itemsArr.push({ x, y });
-	itemsArr.shift();
-
 	if (x > boardCellsNr || y > boardCellsNr || x <= 0 || y <= 0)
 		return (isSnakeMove = false);
+
+	if (x !== foodPosition.x || y !== foodPosition.y) {
+		itemsArr.shift();
+	} else {
+		foodPosition.x = 8;
+		foodPosition.y = 8;
+	}
 
 	displayItems();
 }
