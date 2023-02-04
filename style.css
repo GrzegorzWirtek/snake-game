@@ -3,6 +3,7 @@
   --board-size: 402px;
   --item-size: 40px;
   --item-color: rgb(97, 97, 113);
+  --food-color: rgb(196, 139, 34);
 }
 
 * {
@@ -65,6 +66,12 @@ body {
   grid-row-start: 1;
 }
 
+.food {
+  grid-column-start: 5;
+  grid-row-start: 5;
+  background-color: var(--food-color);
+  border: 1px solid white;
+}
 
 button {
   margin-top: 20px;

@@ -24,6 +24,11 @@ let itemsArr = [
 	},
 ];
 
+let foodPosition = {
+	x: 5,
+	y: 5,
+};
+
 function playAgain() {
 	playAgainBtn.classList.remove('visible');
 	playAgainBtn.removeEventListener('click', playAgain);
@@ -63,6 +68,11 @@ function displayItems() {
 		newItem.style.gridRowStart = position.y;
 		board.appendChild(newItem);
 	});
+	const food = document.createElement('div');
+	food.classList.add('food');
+	food.style.gridColumnStart = foodPosition.x;
+	food.style.gridRowStart = foodPosition.y;
+	board.appendChild(food);
 }
 
 function snakeMove(xNr, yNr) {
