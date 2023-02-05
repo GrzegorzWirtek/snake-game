@@ -1,7 +1,7 @@
 class Food {
-	static randomizeFoodPosition(snakePos, boardCells) {
-		const snakePosition = snakePos;
-		const boardCellsNr = boardCells;
+	static randomizeFoodPosition(snakePositionParam, boardCellsNrParams) {
+		const snakePosition = snakePositionParam;
+		const boardCellsNr = boardCellsNrParams;
 		const randomX = Math.floor(Math.random() * (boardCellsNr - 1) + 1);
 		const randomY = Math.floor(Math.random() * (boardCellsNr - 1) + 1);
 

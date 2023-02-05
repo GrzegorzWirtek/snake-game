@@ -1,6 +1,8 @@
 :root {
+  --main-margin: 20px;
   --board-cells-nr: 15;
   --border-color: grey;
+  --message-color: rgb(130, 29, 29);
   --item-size: 35px;
   --board-size: calc(var(var(--item-size) * var(var(--board-cells-nr))) + 2);
   --item-color: rgb(97, 97, 113);
@@ -36,7 +38,7 @@ body {
 }
 
 .board {
-  margin-top: 50px;
+  margin-top: var(--main-margin);
   width: var(--board-size);
   height: var(--board-size);
   border: 1px solid var(--border-color);
@@ -74,6 +76,20 @@ body {
   border: 1px solid white;
 }
 
+.scores {
+  display: flex;
+  margin-top: var(--main-margin);
+}
+
+.scores__title {
+  font-size: 1.4rem;
+}
+
+.scores__number {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
 button {
   margin-top: 20px;
   padding: 5px 30px;
@@ -82,6 +98,14 @@ button {
 }
 
 .play-again-btn {
+  visibility: hidden;
+}
+
+.info {
+  margin-top: 20px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--message-color);
   visibility: hidden;
 }
 

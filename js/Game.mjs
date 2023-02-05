@@ -1,8 +1,11 @@
 import Snake from './Snake.mjs';
 import Food from './Food.mjs';
+import Info from './Info.mjs';
 
 const BOARD_CLASS = 'board';
 const FOOD_CLASS = 'food';
+const PLAY_AGAIN_BTN_CLASS = 'play-again-btn';
+const VISIBLE_CLASS = 'visible';
 const SNAKE_CELL_CLASS = 'item';
 const BOARD_NR_OF_CELLS = 15;
 const INTITIAL_SNAKE_POSITION = [
@@ -23,6 +26,7 @@ const INTITIAL_SNAKE_POSITION = [
 		y: 1,
 	},
 ];
+
 const INITIAL_FOOD_POSITION = { x: 8, y: 8 };
 const TIME = performance.now();
 const KEY_RIGHT = 'ArrowRight';
@@ -35,15 +39,24 @@ class Game {
 	#isSnakeMove;
 	#time;
 	#currentKey;
+	#playAgainBtn;
+	#boundPlayAgain;
+	#info;
+	#scores;
+
 	constructor() {
 		this.boardCellsNr = BOARD_NR_OF_CELLS;
 		this.board = document.querySelector(`.${BOARD_CLASS}`);
+		this.#playAgainBtn = document.querySelector(`.${PLAY_AGAIN_BTN_CLASS}`);
+		this.#info = new Info();
 		this.snakeSpeed = 6;
-		this.snakePosition = INTITIAL_SNAKE_POSITION;
+		this.snakePosition = [...INTITIAL_SNAKE_POSITION];
 		this.foodPosition = INITIAL_FOOD_POSITION;
 		this.#isSnakeMove = true;
 		this.#time = TIME;
+		this.#scores = 0;
 		this.#currentKey = KEY_RIGHT;
+		this.#boundPlayAgain = () => this.playAgain();
 	}
 
 	#nextFrame(xNr, yNr) {
@@ -63,6 +76,8 @@ class Game {
 				this.snakePosition,
 				this.boardCellsNr,
 			);
+			this.#scores++;
+			this.#info.updateScores(this.#scores);
 		} else {
 			this.snakePosition.shift();
 		}
@@ -89,7 +104,7 @@ class Game {
 	}
 
 	#timeLoop(currentTime) {
-		if (!this.#isSnakeMove) return this.gameOver();
+		if (!this.#isSnakeMove) return this.#gameOver();
 		window.requestAnimationFrame(this.#timeLoop.bind(this));
 		if (currentTime - this.#time < 1000 / this.snakeSpeed) return;
 		this.#chooseDirection(this.#currentKey);
@@ -112,14 +127,35 @@ class Game {
 	#startMove() {
 		this.#isSnakeMove = true;
 		window.requestAnimationFrame(this.#timeLoop.bind(this));
+		this.#info.hideInfo();
 	}
 
-	startGame() {
+	playAgain() {
+		this.#playAgainBtn.removeEventListener('click', this.#boundPlayAgain);
+		this.#playAgainBtn.classList.remove(VISIBLE_CLASS);
+
+		this.snakePosition = [...INTITIAL_SNAKE_POSITION];
+		this.foodPosition = INITIAL_FOOD_POSITION;
+		this.#isSnakeMove = true;
+		Snake.displaySnake(this.board, this.snakePosition, SNAKE_CELL_CLASS);
+		Food.displayFood(this.board, this.foodPosition, FOOD_CLASS);
+		this.#currentKey = KEY_RIGHT;
+		this.#info.showInfo();
+		this.#scores = 0;
+		this.#info.updateScores(this.#scores);
+	}
+
+	#gameOver() {
+		this.#playAgainBtn.classList.add(VISIBLE_CLASS);
+		this.#playAgainBtn.addEventListener('click', this.#boundPlayAgain);
+	}
+
+	initGame() {
+		Snake.displaySnake(this.board, this.snakePosition, SNAKE_CELL_CLASS);
+		Food.displayFood(this.board, this.foodPosition, FOOD_CLASS);
+		this.#info.showInfo();
+		this.#info.updateScores(this.#scores);
 		document.addEventListener('keydown', (e) => this.#changeCurrentKey(e.key));
-	}
-
-	gameOver() {
-		console.log('game over');
 	}
 }
 

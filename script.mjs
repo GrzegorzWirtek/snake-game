@@ -2,7 +2,7 @@ import Game from './js/Game.mjs';
 
 function init() {
 	const game = new Game();
-	game.startGame();
+	game.initGame();
 }
 
 window.onload = init();
