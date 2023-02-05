@@ -1,7 +1,8 @@
 :root {
+  --board-cells-nr: 15;
   --border-color: grey;
-  --board-size: 402px;
-  --item-size: 40px;
+  --item-size: 35px;
+  --board-size: calc(var(var(--item-size) * var(var(--board-cells-nr))) + 2);
   --item-color: rgb(97, 97, 113);
   --food-color: rgb(196, 139, 34);
 }
@@ -40,8 +41,8 @@ body {
   height: var(--board-size);
   border: 1px solid var(--border-color);
   display: grid;
-  grid-template-columns: repeat(10, var(--item-size));
-  grid-template-rows: repeat(10, var(--item-size));
+  grid-template-columns: repeat(var(--board-cells-nr), var(--item-size));
+  grid-template-rows: repeat(var(--board-cells-nr), var(--item-size));
 }
 
 .item {
@@ -67,8 +68,8 @@ body {
 }
 
 .food {
-  grid-column-start: 5;
-  grid-row-start: 5;
+  grid-column-start: 8;
+  grid-row-start: 8;
   background-color: var(--food-color);
   border: 1px solid white;
 }
