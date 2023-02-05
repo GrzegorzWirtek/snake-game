@@ -1,11 +1,7 @@
 const board = document.querySelector('.board');
 const playAgainBtn = document.querySelector('#play-again-btn');
 let isSnakeMove = false;
-const snakeSpeed = 6; //1 slow, 10 fast
-const boardCellsNr = 10;
-let key = 'ArrowRight';
-let time = performance.now();
-let itemsArr = [
+const initialSnakePosition = [
 	{
 		x: 1,
 		y: 1,
@@ -24,34 +20,25 @@ let itemsArr = [
 	},
 ];
 
-let foodPosition = {
+const initialFoodPosition = {
 	x: 5,
 	y: 5,
 };
+const snakeSpeed = 6; //1 slow, 10 fast
+const boardCellsNr = 10;
+let key = 'ArrowRight';
+let time = performance.now();
+let snakePosition = [...initialSnakePosition];
+let foodPosition = { ...initialFoodPosition };
 
 function playAgain() {
 	playAgainBtn.classList.remove('visible');
 	playAgainBtn.removeEventListener('click', playAgain);
-	itemsArr = [
-		{
-			x: 1,
-			y: 1,
-		},
-		{
-			x: 2,
-			y: 1,
-		},
-		{
-			x: 3,
-			y: 1,
-		},
-		{
-			x: 4,
-			y: 1,
-		},
-	];
+	snakePosition = [...initialSnakePosition];
+	foodPosition = { ...initialFoodPosition };
 	key = 'ArrowRight';
-	displayItems();
+	displaySnake();
+	displayFood();
 }
 
 function gameOver() {
@@ -60,10 +47,10 @@ function gameOver() {
 }
 
 function randomizeFoodPosition() {
-	const randomX = Math.floor(Math.random() * 10 + 1);
-	const randomY = Math.floor(Math.random() * 10 + 1);
+	const randomX = Math.floor(Math.random() * (10 - 1) + 1);
+	const randomY = Math.floor(Math.random() * (10 - 1) + 1);
 
-	const duplicated = itemsArr.filter(
+	const duplicated = snakePosition.filter(
 		(item) => item.x === randomX && item.y === randomY,
 	);
 
@@ -81,36 +68,50 @@ function displayFood() {
 	board.appendChild(food);
 }
 
-function displayItems() {
+function displaySnake() {
 	board.textContent = '';
 
-	itemsArr.map((position) => {
+	snakePosition.map((position) => {
 		const newItem = document.createElement('div');
 		newItem.classList.add('item');
 		newItem.style.gridColumnStart = position.x;
 		newItem.style.gridRowStart = position.y;
 		board.appendChild(newItem);
 	});
+}
 
-	displayFood();
+function isSnakeOffTheBoard(x, y) {
+	return x > boardCellsNr || y > boardCellsNr || x <= 0 || y <= 0;
+}
+
+function isSnakeTouchedItself() {
+	const duplicatedObj = snakePosition.filter(
+		(obj, index) =>
+			snakePosition.findIndex(
+				(item) => item.x === obj.x && item.y === obj.y,
+			) !== index,
+	).length;
+
+	return duplicatedObj;
 }
 
 function snakeMove(xNr, yNr) {
-	let x = itemsArr[itemsArr.length - 1].x + xNr;
-	let y = itemsArr[itemsArr.length - 1].y + yNr;
+	let x = snakePosition[snakePosition.length - 1].x + xNr;
+	let y = snakePosition[snakePosition.length - 1].y + yNr;
 
-	itemsArr.push({ x, y });
+	snakePosition.push({ x, y });
 
-	if (x > boardCellsNr || y > boardCellsNr || x <= 0 || y <= 0)
+	if (isSnakeOffTheBoard(x, y) || isSnakeTouchedItself())
 		return (isSnakeMove = false);
 
 	if (x === foodPosition.x && y === foodPosition.y) {
 		foodPosition = randomizeFoodPosition();
 	} else {
-		itemsArr.shift();
+		snakePosition.shift();
 	}
 
-	displayItems();
+	displaySnake();
+	displayFood();
 }
 
 function chooseDirection(key) {
