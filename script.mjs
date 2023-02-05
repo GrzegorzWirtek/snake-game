@@ -59,6 +59,20 @@ function gameOver() {
 	playAgainBtn.addEventListener('click', playAgain);
 }
 
+function randomizeFoodPosition() {
+	const randomX = Math.floor(Math.random() * 10 + 1);
+	const randomY = Math.floor(Math.random() * 10 + 1);
+
+	const duplicated = itemsArr.filter(
+		(item) => item.x === randomX && item.y === randomY,
+	);
+
+	if (duplicated.length) {
+		return randomizeFoodPosition();
+	}
+	return { x: randomX, y: randomY };
+}
+
 function displayFood() {
 	const food = document.createElement('div');
 	food.classList.add('food');
@@ -77,6 +91,7 @@ function displayItems() {
 		newItem.style.gridRowStart = position.y;
 		board.appendChild(newItem);
 	});
+
 	displayFood();
 }
 
@@ -85,14 +100,14 @@ function snakeMove(xNr, yNr) {
 	let y = itemsArr[itemsArr.length - 1].y + yNr;
 
 	itemsArr.push({ x, y });
+
 	if (x > boardCellsNr || y > boardCellsNr || x <= 0 || y <= 0)
 		return (isSnakeMove = false);
 
-	if (x !== foodPosition.x || y !== foodPosition.y) {
-		itemsArr.shift();
+	if (x === foodPosition.x && y === foodPosition.y) {
+		foodPosition = randomizeFoodPosition();
 	} else {
-		foodPosition.x = 8;
-		foodPosition.y = 8;
+		itemsArr.shift();
 	}
 
 	displayItems();
