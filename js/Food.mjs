@@ -1,15 +1,16 @@
 class Food {
-	static randomizeFoodPosition(snakePos) {
+	static randomizeFoodPosition(snakePos, boardCells) {
 		const snakePosition = snakePos;
-		const randomX = Math.floor(Math.random() * (10 - 1) + 1);
-		const randomY = Math.floor(Math.random() * (10 - 1) + 1);
+		const boardCellsNr = boardCells;
+		const randomX = Math.floor(Math.random() * (boardCellsNr - 1) + 1);
+		const randomY = Math.floor(Math.random() * (boardCellsNr - 1) + 1);
 
 		const duplicated = snakePosition.filter(
 			(item) => item.x === randomX && item.y === randomY,
 		);
 
 		if (duplicated.length) {
-			return this.randomizeFoodPosition(snakePosition);
+			return this.randomizeFoodPosition(snakePosition, boardCellsNr);
 		}
 		return { x: randomX, y: randomY };
 	}

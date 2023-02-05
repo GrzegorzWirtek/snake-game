@@ -29,6 +29,7 @@ const KEY_RIGHT = 'ArrowRight';
 const KEY_LEFT = 'ArrowLeft';
 const KEY_UP = 'ArrowUp';
 const KEY_DOWN = 'ArrowDown';
+const KEY_ENTER = 'Enter';
 
 class Game {
 	#isSnakeMove;
@@ -58,7 +59,10 @@ class Game {
 			return (this.#isSnakeMove = false);
 
 		if (x === this.foodPosition.x && y === this.foodPosition.y) {
-			this.foodPosition = Food.randomizeFoodPosition(this.snakePosition);
+			this.foodPosition = Food.randomizeFoodPosition(
+				this.snakePosition,
+				this.boardCellsNr,
+			);
 		} else {
 			this.snakePosition.shift();
 		}
@@ -93,12 +97,24 @@ class Game {
 	}
 
 	#changeCurrentKey(key) {
+		if (key === KEY_ENTER) return this.#startMove();
+		else if (
+			key !== KEY_DOWN &&
+			key !== KEY_LEFT &&
+			key !== KEY_RIGHT &&
+			key !== KEY_UP
+		)
+			return;
+
 		this.#currentKey = key;
 	}
 
-	startMove() {
+	#startMove() {
 		this.#isSnakeMove = true;
 		window.requestAnimationFrame(this.#timeLoop.bind(this));
+	}
+
+	startGame() {
 		document.addEventListener('keydown', (e) => this.#changeCurrentKey(e.key));
 	}
 
