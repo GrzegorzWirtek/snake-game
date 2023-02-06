@@ -8,7 +8,7 @@ const START_GAME_BTN_ID = 'start-game-btn';
 const PAUSE_GAME_BTN_ID = 'pause-game-btn';
 const NEW_GAME_BTN_ID = 'new-game-btn';
 const SPEED_INPUT_ID = 'speed';
-const SPEED_LABEL_CLASS = 'speed__label';
+const SPEED_LABEL_CLASS = 'ui__speed';
 const SNAKE_CELL_CLASS = 'item';
 const DISABLE_CLASS = 'disable';
 const BOARD_NR_OF_CELLS = 15;
@@ -128,7 +128,7 @@ class Game {
 	}
 
 	#changeCurrentKey(key) {
-		if (key === KEY_ENTER) return this.#startMove();
+		if (key === KEY_ENTER) return this.#startGame();
 		else if (
 			key !== KEY_DOWN &&
 			key !== KEY_LEFT &&
@@ -176,6 +176,7 @@ class Game {
 		if (this.#pause) return (this.#pauseGameBtn.disabled = true);
 		this.#newGameBtn.disabled = false;
 		this.#pauseGameBtn.disabled = true;
+		this.#info.showGameOver(this.board);
 	}
 
 	initGame() {
