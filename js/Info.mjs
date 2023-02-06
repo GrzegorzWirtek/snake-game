@@ -1,45 +1,20 @@
-const INFO_CLASS = 'info';
-const VISIBLE_CLASS = 'visible';
-const SCORES_CLASS = 'scores__number';
-const SPEED_INPUT_ID = 'speed';
-const SPEED_NUMBER_CLASS = 'speed__nr';
+const INFO_SCORES = 'info__scores-number';
+const INFO_SPEED = 'info__speed-number';
 
 class Info {
-	#info;
-	#scores;
-	#speed;
-	#speedNr;
+	#infoScores;
+	#infoSpeed;
 	constructor() {
-		this.#info = document.querySelector(`.${INFO_CLASS}`);
-		this.#scores = document.querySelector(`.${SCORES_CLASS}`);
-		this.speedInput = document.querySelector(`#${SPEED_INPUT_ID}`);
-		this.speedInput.addEventListener('input', this.#changeSpeed.bind(this));
-		this.#speed = this.speedInput.value;
-		this.#speedNr = document.querySelector(`.${SPEED_NUMBER_CLASS}`);
-	}
-	showInfo() {
-		this.#info.classList.add(VISIBLE_CLASS);
-	}
-
-	hideInfo() {
-		this.#info.classList.remove(VISIBLE_CLASS);
+		this.#infoScores = document.querySelector(`.${INFO_SCORES}`);
+		this.#infoSpeed = document.querySelector(`.${INFO_SPEED}`);
 	}
 
 	updateScores(scores) {
-		this.#scores.textContent = scores;
+		this.#infoScores.textContent = scores;
 	}
 
-	#changeSpeed(e) {
-		this.#speed = e.target.value;
-		this.#viewSpeedNumber(this.#speed - 1);
-	}
-
-	#viewSpeedNumber(speed) {
-		this.#speedNr.textContent = speed;
-	}
-
-	get getSpeed() {
-		return this.#speed;
+	viewSpeedNumber(speed) {
+		this.#infoSpeed.textContent = speed;
 	}
 }
 

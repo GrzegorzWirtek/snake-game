@@ -2,9 +2,8 @@
   --main-margin: 20px;
   --board-cells-nr: 15;
   --border-color: grey;
-  --message-color: rgb(130, 29, 29);
   --item-size: 35px;
-  --board-size: calc(var(var(--item-size) * var(var(--board-cells-nr))) + 2);
+  --board-size: calc(var(--item-size) * var(--board-cells-nr) + 2px);
   --item-color: rgb(97, 97, 113);
   --food-color: rgb(196, 139, 34);
 }
@@ -39,8 +38,6 @@ body {
 
 .board {
   margin-top: var(--main-margin);
-  width: var(--board-size);
-  height: var(--board-size);
   border: 1px solid var(--border-color);
   display: grid;
   grid-template-columns: repeat(var(--board-cells-nr), var(--item-size));
@@ -97,16 +94,25 @@ button {
   cursor: pointer;
 }
 
-.play-again-btn {
-  visibility: hidden;
+.info {
+  margin-top: var(--main-margin);
+  display: flex;
+  justify-content: space-between;
+
+  width: var(--board-size);
 }
 
-.info {
-  margin-top: 20px;
+.info__scores-title,
+.info__speed-title {
+  font-size: 1.4rem;
+}
+
+.info__scores-number,
+.info__speed-number {
+  display: inline-block;
   font-size: 1.4rem;
   font-weight: bold;
-  color: var(--message-color);
-  visibility: hidden;
+  width: 30px;
 }
 
 .speed {
@@ -128,6 +134,6 @@ button {
   text-align: center;
 }
 
-.visible {
-  visibility: visible;
+.disable {
+  color: grey;
 }

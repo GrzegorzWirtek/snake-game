@@ -4,9 +4,13 @@ import Info from './Info.mjs';
 
 const BOARD_CLASS = 'board';
 const FOOD_CLASS = 'food';
-const PLAY_AGAIN_BTN_CLASS = 'play-again-btn';
-const VISIBLE_CLASS = 'visible';
+const START_GAME_BTN_ID = 'start-game-btn';
+const PAUSE_GAME_BTN_ID = 'pause-game-btn';
+const NEW_GAME_BTN_ID = 'new-game-btn';
+const SPEED_INPUT_ID = 'speed';
+const SPEED_LABEL_CLASS = 'speed__label';
 const SNAKE_CELL_CLASS = 'item';
+const DISABLE_CLASS = 'disable';
 const BOARD_NR_OF_CELLS = 15;
 const INTITIAL_SNAKE_POSITION = [
 	{
@@ -39,24 +43,34 @@ class Game {
 	#isSnakeMove;
 	#time;
 	#currentKey;
-	#playAgainBtn;
-	#boundPlayAgain;
+	#startGameBtn;
+	#pauseGameBtn;
+	#newGameBtn;
+	#speedInput;
 	#info;
 	#scores;
+	#pause;
+	#speed;
+	#speedLabel;
 
 	constructor() {
 		this.boardCellsNr = BOARD_NR_OF_CELLS;
 		this.board = document.querySelector(`.${BOARD_CLASS}`);
-		this.#playAgainBtn = document.querySelector(`.${PLAY_AGAIN_BTN_CLASS}`);
+		this.#startGameBtn = document.querySelector(`#${START_GAME_BTN_ID}`);
+		this.#pauseGameBtn = document.querySelector(`#${PAUSE_GAME_BTN_ID}`);
+		this.#newGameBtn = document.querySelector(`#${NEW_GAME_BTN_ID}`);
+		this.#speedInput = document.querySelector(`#${SPEED_INPUT_ID}`);
+		this.#speedLabel = document.querySelector(`.${SPEED_LABEL_CLASS}`);
 		this.#info = new Info();
 		this.snakeSpeed = this.#info.speed;
-		this.snakePosition = [...INTITIAL_SNAKE_POSITION];
-		this.foodPosition = INITIAL_FOOD_POSITION;
-		this.#isSnakeMove = true;
 		this.#time = TIME;
-		this.#scores = 0;
-		this.#currentKey = KEY_RIGHT;
-		this.#boundPlayAgain = () => this.playAgain();
+		this.#speed = this.#speedInput.value;
+
+		document.addEventListener('keydown', (e) => this.#changeCurrentKey(e.key));
+		this.#startGameBtn.addEventListener('click', this.#startGame.bind(this));
+		this.#pauseGameBtn.addEventListener('click', this.#pauseGame.bind(this));
+		this.#newGameBtn.addEventListener('click', this.#newGame.bind(this));
+		this.#speedInput.addEventListener('input', this.#changeSpeed.bind(this));
 	}
 
 	#nextFrame(xNr, yNr) {
@@ -128,39 +142,55 @@ class Game {
 
 	#startMove() {
 		this.#isSnakeMove = true;
-
-		this.snakeSpeed = this.#info.getSpeed;
-		console.log(this.#info.getSpeed);
+		this.snakeSpeed = this.#speed;
 		window.requestAnimationFrame(this.#timeLoop.bind(this));
-		this.#info.hideInfo();
 	}
 
-	playAgain() {
-		this.#playAgainBtn.removeEventListener('click', this.#boundPlayAgain);
-		this.#playAgainBtn.classList.remove(VISIBLE_CLASS);
+	#changeSpeed(e) {
+		this.#speed = e.target.value;
+		this.#info.viewSpeedNumber(this.#speed - 1);
+	}
 
-		this.snakePosition = [...INTITIAL_SNAKE_POSITION];
-		this.foodPosition = INITIAL_FOOD_POSITION;
-		this.#isSnakeMove = true;
-		Snake.displaySnake(this.board, this.snakePosition, SNAKE_CELL_CLASS);
-		Food.displayFood(this.board, this.foodPosition, FOOD_CLASS);
-		this.#currentKey = KEY_RIGHT;
-		this.#info.showInfo();
-		this.#scores = 0;
-		this.#info.updateScores(this.#scores);
+	#startGame() {
+		this.#pause = false;
+		this.#startMove();
+		this.#startGameBtn.disabled = true;
+		this.#pauseGameBtn.disabled = false;
+		this.#speedInput.disabled = true;
+		this.#speedLabel.classList.add(DISABLE_CLASS);
+	}
+
+	#pauseGame() {
+		this.#pause = true;
+		this.#startGameBtn.disabled = false;
+		this.#isSnakeMove = false;
+	}
+
+	#newGame() {
+		this.#newGameBtn.disabled = true;
+		this.#startGameBtn.disabled = false;
+		this.initGame();
 	}
 
 	#gameOver() {
-		this.#playAgainBtn.classList.add(VISIBLE_CLASS);
-		this.#playAgainBtn.addEventListener('click', this.#boundPlayAgain);
+		if (this.#pause) return (this.#pauseGameBtn.disabled = true);
+		this.#newGameBtn.disabled = false;
+		this.#pauseGameBtn.disabled = true;
 	}
 
 	initGame() {
+		this.snakePosition = [...INTITIAL_SNAKE_POSITION];
+		this.foodPosition = INITIAL_FOOD_POSITION;
+		this.#isSnakeMove = true;
+		this.#currentKey = KEY_RIGHT;
+		this.#scores = 0;
+		this.#pause = false;
+		this.#info.updateScores(this.#scores);
 		Snake.displaySnake(this.board, this.snakePosition, SNAKE_CELL_CLASS);
 		Food.displayFood(this.board, this.foodPosition, FOOD_CLASS);
-		this.#info.showInfo();
-		this.#info.updateScores(this.#scores);
-		document.addEventListener('keydown', (e) => this.#changeCurrentKey(e.key));
+		this.#info.viewSpeedNumber(this.#speed - 1);
+		this.#speedInput.disabled = false;
+		this.#speedLabel.classList.remove(DISABLE_CLASS);
 	}
 }
 

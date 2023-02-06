@@ -10,19 +10,24 @@
 </head>
 
 <body>
-  <div class="scores">
-    <p class="scores__title">Scores: <span class="scores__number"></span> </p>
+  <div class="info">
+    <p class="info__scores-title">Scores: <span class="info__scores-number"></span></p>
+    <p class="info__speed-title">Speed: <span class="info__speed-number"></span></p>
   </div>
-  <div class="board"></div>
-  <p class="info">Press ENTER to start game</p>
 
-  <button id="play-again-btn" class="play-again-btn">PLAY AGAIN</button>
-  <script src="script.mjs" type="module"></script>
-  <div class="speed">
-    <label for="speed" class="speed__label">Speed</label>
-    <input type="range" id="speed" name="speed" class="speed__input" min="2" max="11">
-    <p class="speed__nr">5</p>
+  <div class="board"></div>
+
+  <div class="ui">
+    <button id="start-game-btn" class="ui__start-game-btn">START</button>
+    <button disabled id="pause-game-btn" class="ui__pause-game-btn">PAUSE</button>
+    <button disabled id="new-game-btn" class="ui__new-game-btn">NEW GAME</button>
+    <div class="speed">
+      <label for="speed" class="speed__label">Speed</label>
+      <input type="range" id="speed" name="speed" class="speed__input" min="2" max="11">
+    </div>
   </div>
+
+  <script src="script.mjs" type="module"></script>
 </body>
 
 </html>
