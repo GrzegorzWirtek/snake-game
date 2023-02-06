@@ -14,9 +14,15 @@
     <p class="scores__title">Scores: <span class="scores__number"></span> </p>
   </div>
   <div class="board"></div>
-  <h2 class="info">Press ENTER to start game</h2>
+  <p class="info">Press ENTER to start game</p>
+
   <button id="play-again-btn" class="play-again-btn">PLAY AGAIN</button>
   <script src="script.mjs" type="module"></script>
+  <div class="speed">
+    <label for="speed" class="speed__label">Speed</label>
+    <input type="range" id="speed" name="speed" class="speed__input" min="2" max="11">
+    <p class="speed__nr">5</p>
+  </div>
 </body>
 
 </html>

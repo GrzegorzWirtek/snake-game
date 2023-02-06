@@ -109,6 +109,25 @@ button {
   visibility: hidden;
 }
 
+.speed {
+  display: flex;
+}
+
+.speed__label {
+  margin-right: 10px;
+}
+
+.speed__input {
+  margin: 0 calc(var(--main-margin) /2);
+  cursor: pointer
+}
+
+.speed__nr {
+  display: block;
+  width: 30px;
+  text-align: center;
+}
+
 .visible {
   visibility: visible;
 }

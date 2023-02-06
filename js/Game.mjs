@@ -49,7 +49,7 @@ class Game {
 		this.board = document.querySelector(`.${BOARD_CLASS}`);
 		this.#playAgainBtn = document.querySelector(`.${PLAY_AGAIN_BTN_CLASS}`);
 		this.#info = new Info();
-		this.snakeSpeed = 6;
+		this.snakeSpeed = this.#info.speed;
 		this.snakePosition = [...INTITIAL_SNAKE_POSITION];
 		this.foodPosition = INITIAL_FOOD_POSITION;
 		this.#isSnakeMove = true;
@@ -100,6 +100,8 @@ class Game {
 			case KEY_UP:
 				this.#nextFrame(0, -1);
 				break;
+			default:
+				return;
 		}
 	}
 
@@ -126,6 +128,9 @@ class Game {
 
 	#startMove() {
 		this.#isSnakeMove = true;
+
+		this.snakeSpeed = this.#info.getSpeed;
+		console.log(this.#info.getSpeed);
 		window.requestAnimationFrame(this.#timeLoop.bind(this));
 		this.#info.hideInfo();
 	}
