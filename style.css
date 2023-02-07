@@ -2,10 +2,9 @@
 
 :root {
   --main-margin: 20px;
-  --board-cells-nr: 15;
-  --border-color: grey;
+  --item-size: 30px;
+  --board-cells-nr: 20;
   --border-radius: 4px;
-  --item-size: 35px;
   --board-size: calc(var(--item-size) * var(--board-cells-nr) + 2px);
   --board-color: #131414;
   --item-color: #1f7d81;
@@ -81,15 +80,15 @@ body {
   grid-column-start: 1;
   grid-row-start: 1;
   background-color: var(--item-color);
-  border: 1px solid transparent;
+  border: 1px solid var(--board-color);
   border-radius: var(--border-radius);
   justify-self: center;
   align-self: center;
-  width: calc(var(--item-size) - 2px);
-  height: calc(var(--item-size) - 2px);
-  -webkit-box-shadow: 0px 0px 17px -4px rgba(31, 125, 129, 0.48);
-  -moz-box-shadow: 0px 0px 17px -4px rgba(31, 125, 129, 0.48);
-  box-shadow: 0px 0px 17px -4px rgba(31, 125, 129, 0.48);
+  width: var(--item-size);
+  height: var(--item-size);
+  -webkit-box-shadow: 0px 0px 13px -3px rgba(39, 155, 160, 0.21);
+  -moz-box-shadow: 0px 0px 13px -3px rgba(39, 155, 160, 0.21);
+  box-shadow: 0px 0px 13px -3px rgba(39, 155, 160, 0.21);
 }
 
 .food {

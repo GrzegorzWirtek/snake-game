@@ -11,7 +11,9 @@ const SPEED_INPUT_ID = 'speed';
 const SPEED_LABEL_CLASS = 'ui__speed';
 const SNAKE_CELL_CLASS = 'item';
 const DISABLE_CLASS = 'disable';
-const BOARD_NR_OF_CELLS = 15;
+const BOARD_NR_OF_CELLS = getComputedStyle(
+	document.documentElement,
+).getPropertyValue('--board-cells-nr');
 const INTITIAL_SNAKE_POSITION = [
 	{
 		x: 1,
@@ -51,6 +53,7 @@ class Game {
 	#scores;
 	#pause;
 	#speed;
+	#speedFactor;
 	#speedLabel;
 
 	constructor() {
@@ -65,6 +68,7 @@ class Game {
 		this.snakeSpeed = this.#info.speed;
 		this.#time = TIME;
 		this.#speed = this.#speedInput.value;
+		this.#speedFactor = this.#speedInput.min - 1;
 
 		document.addEventListener('keydown', (e) => this.#changeCurrentKey(e.key));
 		this.#startGameBtn.addEventListener('click', this.#startGame.bind(this));
@@ -151,7 +155,7 @@ class Game {
 
 	#changeSpeed(e) {
 		this.#speed = e.target.value;
-		this.#info.viewSpeedNumber(this.#speed - 1);
+		this.#info.viewSpeedNumber(this.#speed - this.#speedFactor);
 	}
 
 	#startGame() {
@@ -192,7 +196,7 @@ class Game {
 		this.#info.updateScores(this.#scores);
 		Snake.displaySnake(this.board, this.snakePosition, SNAKE_CELL_CLASS);
 		Food.displayFood(this.board, this.foodPosition, FOOD_CLASS);
-		this.#info.viewSpeedNumber(this.#speed - 1);
+		this.#info.viewSpeedNumber(this.#speed - this.#speedFactor);
 		this.#speedInput.disabled = false;
 		this.#speedLabel.classList.remove(DISABLE_CLASS);
 	}
