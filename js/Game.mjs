@@ -130,13 +130,16 @@ class Game {
 	#changeCurrentKey(key) {
 		if (key === KEY_ENTER) return this.#startGame();
 		else if (
-			key !== KEY_DOWN &&
-			key !== KEY_LEFT &&
-			key !== KEY_RIGHT &&
-			key !== KEY_UP
+			(key !== KEY_DOWN &&
+				key !== KEY_LEFT &&
+				key !== KEY_RIGHT &&
+				key !== KEY_UP) ||
+			(this.#currentKey === KEY_RIGHT && key === KEY_LEFT) ||
+			(this.#currentKey === KEY_LEFT && key === KEY_RIGHT) ||
+			(this.#currentKey === KEY_UP && key === KEY_DOWN) ||
+			(this.#currentKey === KEY_DOWN && key === KEY_UP)
 		)
 			return;
-
 		this.#currentKey = key;
 	}
 
