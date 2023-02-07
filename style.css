@@ -63,6 +63,24 @@ body {
   background-color: var(--body-color);
 }
 
+.min-width-message {
+  padding: 15px;
+  text-align: center;
+  display: none;
+}
+
+@media (max-width: 650px) or (max-height: 770px) {
+  .game {
+    display: none;
+  }
+
+  .min-width-message {
+    display: block;
+  }
+}
+
+
+
 .board {
   position: relative;
   border: 1px solid var(--board-color);
