@@ -70,8 +70,8 @@ class Game {
 		this.#info = new Info();
 		this.snakeSpeed = this.#info.speed;
 		this.#time = TIME;
-		this.#speed = this.#speedInput.value;
 		this.#speedFactor = this.#speedInput.min - 1;
+		this.#speed = this.#speedInput.value;
 
 		document.addEventListener('keydown', (e) => this.#changeCurrentKey(e.key));
 		this.#startGameBtn.addEventListener('click', this.#startGame.bind(this));
@@ -208,6 +208,8 @@ class Game {
 	}
 
 	initGame() {
+		const speedWithFactor = this.#speed - this.#speedFactor;
+		this.#info.checkLocalStorage(speedWithFactor, this.#scores);
 		this.snakePosition = [...INTITIAL_SNAKE_POSITION];
 		this.foodPosition = INITIAL_FOOD_POSITION;
 		this.#isSnakeMove = false;
@@ -217,7 +219,7 @@ class Game {
 		this.#info.updateScores(this.#scores);
 		Snake.displaySnake(this.board, this.snakePosition, SNAKE_CELL_CLASS);
 		Food.displayFood(this.board, this.foodPosition, FOOD_CLASS);
-		this.#info.viewSpeedNumber(this.#speed - this.#speedFactor);
+		this.#info.viewSpeedNumber(speedWithFactor);
 		this.#speedInput.disabled = false;
 		this.#speedLabel.classList.remove(DISABLE_CLASS);
 	}

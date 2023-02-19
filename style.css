@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&display=swap');
 
 :root {
+  --body-color: rgb(216, 216, 216);
   --main-margin: 20px;
   --item-size: 30px;
   --board-cells-nr: 20;
@@ -16,7 +17,6 @@
   --input-disabled-color: #535c6850;
   --btn-height: 44px;
   --gap: 7px;
-  --body-color: rgb(216, 216, 216);
 }
 
 * {
@@ -79,8 +79,6 @@ body {
   }
 }
 
-
-
 .board {
   position: relative;
   border: 1px solid var(--board-color);
@@ -140,7 +138,30 @@ body {
 .info {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: var(--board-size);
+}
+
+.info__record-title {
+  line-height: 1;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.info__record {
+  line-height: 1;
+  font-size: 0.9rem;
+}
+
+.info__record-wrapper {
+  text-align: center;
+}
+
+.info__record-number,
+.info__record-speed-number {
+  font-weight: 600;
 }
 
 .info__scores-title,
