@@ -40,18 +40,21 @@ const KEY_LEFT = 'ArrowLeft';
 const KEY_UP = 'ArrowUp';
 const KEY_DOWN = 'ArrowDown';
 const KEY_ENTER = 'Enter';
+const GAME_OFF = 'gameOff';
+const GAME_ON = 'gameOn';
+const GAME_OVER = 'gameOver';
 
 class Game {
 	#isSnakeMove;
 	#time;
 	#currentKey;
+	#gameState;
 	#startGameBtn;
 	#pauseGameBtn;
 	#newGameBtn;
 	#speedInput;
 	#info;
 	#scores;
-	#pause;
 	#speed;
 	#speedFactor;
 	#speedLabel;
@@ -118,6 +121,7 @@ class Game {
 			case KEY_UP:
 				this.#nextFrame(0, -1);
 				break;
+
 			default:
 				return;
 		}
@@ -131,8 +135,25 @@ class Game {
 		this.#time = currentTime;
 	}
 
+	#enterBehavior() {
+		switch (this.#gameState) {
+			case GAME_OFF:
+				this.#startGame();
+				this.#gameState = GAME_ON;
+				break;
+			case GAME_ON:
+				this.#pauseGame();
+				this.#gameState = GAME_OFF;
+				break;
+			case GAME_OVER:
+				this.#newGame();
+				this.#gameState = GAME_OFF;
+				break;
+		}
+	}
+
 	#changeCurrentKey(key) {
-		if (key === KEY_ENTER) return this.#startGame();
+		if (key === KEY_ENTER) return this.#enterBehavior();
 		else if (
 			(key !== KEY_DOWN &&
 				key !== KEY_LEFT &&
@@ -159,7 +180,6 @@ class Game {
 	}
 
 	#startGame() {
-		this.#pause = false;
 		this.#startMove();
 		this.#startGameBtn.disabled = true;
 		this.#pauseGameBtn.disabled = false;
@@ -168,7 +188,6 @@ class Game {
 	}
 
 	#pauseGame() {
-		this.#pause = true;
 		this.#startGameBtn.disabled = false;
 		this.#isSnakeMove = false;
 	}
@@ -180,19 +199,21 @@ class Game {
 	}
 
 	#gameOver() {
-		if (this.#pause) return (this.#pauseGameBtn.disabled = true);
+		if (this.#gameState === GAME_OFF)
+			return (this.#pauseGameBtn.disabled = true);
 		this.#newGameBtn.disabled = false;
 		this.#pauseGameBtn.disabled = true;
+		this.#gameState = GAME_OVER;
 		this.#info.showGameOver(this.board);
 	}
 
 	initGame() {
 		this.snakePosition = [...INTITIAL_SNAKE_POSITION];
 		this.foodPosition = INITIAL_FOOD_POSITION;
-		this.#isSnakeMove = true;
+		this.#isSnakeMove = false;
+		this.#gameState = GAME_OFF;
 		this.#currentKey = KEY_RIGHT;
 		this.#scores = 0;
-		this.#pause = false;
 		this.#info.updateScores(this.#scores);
 		Snake.displaySnake(this.board, this.snakePosition, SNAKE_CELL_CLASS);
 		Food.displayFood(this.board, this.foodPosition, FOOD_CLASS);
