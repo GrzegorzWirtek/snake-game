@@ -139,15 +139,12 @@ class Game {
 		switch (this.#gameState) {
 			case GAME_OFF:
 				this.#startGame();
-				this.#gameState = GAME_ON;
 				break;
 			case GAME_ON:
 				this.#pauseGame();
-				this.#gameState = GAME_OFF;
 				break;
 			case GAME_OVER:
 				this.#newGame();
-				this.#gameState = GAME_OFF;
 				break;
 		}
 	}
@@ -180,6 +177,7 @@ class Game {
 	}
 
 	#startGame() {
+		this.#gameState = GAME_ON;
 		this.#startMove();
 		this.#startGameBtn.disabled = true;
 		this.#pauseGameBtn.disabled = false;
@@ -188,17 +186,20 @@ class Game {
 	}
 
 	#pauseGame() {
+		this.#gameState = GAME_OFF;
 		this.#startGameBtn.disabled = false;
 		this.#isSnakeMove = false;
 	}
 
 	#newGame() {
+		this.#gameState = GAME_OFF;
 		this.#newGameBtn.disabled = true;
 		this.#startGameBtn.disabled = false;
 		this.initGame();
 	}
 
 	#gameOver() {
+		console.log('game over', this.#gameState);
 		if (this.#gameState === GAME_OFF)
 			return (this.#pauseGameBtn.disabled = true);
 		this.#newGameBtn.disabled = false;
